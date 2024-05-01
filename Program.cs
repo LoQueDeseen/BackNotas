@@ -8,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers();
+
+
 builder.Services.AddDbContext<NotasContext>(options => 
     options.UseMySql(
         builder.Configuration.GetConnectionString("MysqlConnection"),
@@ -29,6 +32,9 @@ var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
+
+
+app.MapControllers();
 
 app.MapGet("/weatherforecast", () =>
 {
