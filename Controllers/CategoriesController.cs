@@ -44,6 +44,23 @@ namespace BackNotas.Controllers{
             return CreatedAtAction("GetCategory", new {id = category.Id}, category); // crea un objeto con un solo campo llamdo id (para la URL) y category es el objeto que se devuelve en respuesta :)
         }
 
+        // elminar categoría 
+
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> DeleteCategory(int Id){
+            var category = await _context.Categories.FindAsync(Id); 
+            if (category==null){
+                return NotFound();
+            }
+
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+            return NoContent();
+
+        }
+
+        
+
 
 
     }
