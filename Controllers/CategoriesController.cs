@@ -15,11 +15,13 @@ namespace BackNotas.Controllers{
         public CategoriesController(NotasContext context){
             _context= context;
         }
-
+        // listar 
         [HttpGet]// traigo lista de categorías
         public async Task<ActionResult<IEnumerable<Category>>> GetUser(){ //Ienumerable trae una coleccion de categorías 
             return await _context.Categories.ToListAsync();// trae la lista de categorias en la base de datos 
         }
+
+        //buscar por id
 
         [HttpGet("{Id}")] 
         public async Task<ActionResult<Category>> GetCategory(int Id){ 
@@ -30,6 +32,16 @@ namespace BackNotas.Controllers{
 
             }
             return category;
+        }
+
+        // Crear categoría 
+
+        [HttpPost] 
+
+        public async Task<ActionResult<Category>> PostCategory( Category  category){
+            _context.Categories.Add(category);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetCategory", new {id = category.Id}, category); // crea un objeto con un solo campo llamdo id (para la URL) y category es el objeto que se devuelve en respuesta :)
         }
 
 
