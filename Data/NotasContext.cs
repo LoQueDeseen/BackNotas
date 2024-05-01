@@ -12,6 +12,7 @@ namespace BackNotas.Data
         public NotasContext(DbContextOptions<NotasContext> options): base(options){}
 
           public DbSet<Category> Categories {get; set;}
+          public DbSet<Note> Notes {get; set;}
       
     }
 

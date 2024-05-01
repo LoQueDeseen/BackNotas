@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackNotas.Models
 {
-    public class Notes
+    public class Note
     {
         public int Id { get; set; }
         public string Title { get; set; }
