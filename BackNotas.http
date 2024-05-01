@@ -1,0 +1,6 @@
+@BackNotas_HostAddress = http://localhost:5088
+
+GET {{BackNotas_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
