@@ -25,7 +25,7 @@ namespace BackNotas.Controllers{
 
         [HttpGet("{Id}")] 
         public async Task<ActionResult<Category>> GetCategory(int Id){ 
-            var category= await _context.Categories.FindAsync();// trae la que encuantre por id
+            var category= await _context.Categories.FindAsync(Id);// trae la que encuantre por id
 
             if (category==null){ // si no llega datos, retorna no encontrado 
                 return NotFound();

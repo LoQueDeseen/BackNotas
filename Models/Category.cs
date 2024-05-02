@@ -7,8 +7,8 @@ namespace BackNotas.Models{
 
         public string Status {get; set;} 
 
-        public string? Create_at   {get; set;}
-        public string? Update_at   {get; set;}
+        public DateTime? Create_at   {get; set;}
+        public DateTime? Update_at   {get; set;}
 
 
     }

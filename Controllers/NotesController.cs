@@ -24,7 +24,7 @@ namespace BackNotas.Controllers
         }
 
         //Detalles de notas 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Note>> GetNote(int id){
             var note = await _context.Notes.FindAsync(id);
 
