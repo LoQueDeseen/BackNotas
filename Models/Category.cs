@@ -1,3 +1,6 @@
+
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace BackNotas.Models{
 
     public class Category {
@@ -9,6 +12,9 @@ namespace BackNotas.Models{
 
         public DateTime? Create_at   {get; set;}
         public DateTime? Update_at   {get; set;}
+
+        [ForeignKey("Users")]
+        public int UserId {get; set;}
 
 
     }
