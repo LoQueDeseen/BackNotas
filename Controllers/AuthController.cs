@@ -22,6 +22,8 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login(User model)
     {
+        Console.WriteLine("user" + model.UserName + " password: " + model.Password);
+
         var user = _context.Users.FirstOrDefault(u => u.UserName == model.UserName && u.Password == model.Password);
 
         if (user == null)
