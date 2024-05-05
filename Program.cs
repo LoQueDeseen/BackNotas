@@ -1,6 +1,11 @@
 using BackNotas.Data;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +22,21 @@ builder.Services.AddDbContext<NotasContext>(options =>
         Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.2-mysql")
     ));
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "tu_issuer",
+            ValidAudience = "tu_audience",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("tu_clave_secreta"))
+        };
+    });    
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +47,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Usar la autenticación
+app.UseAuthentication();
 
 
 app.MapControllers();
