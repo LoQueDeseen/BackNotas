@@ -61,11 +61,21 @@ namespace BackNotas.Controllers{
 
         // actualizar siguendo la anterior logica
 
-        [HttpPut("{Id}")]
+        [HttpPut("{id}")]
 
-        public async Task <IActionResult> PutCategory(int Id, Category category){ // no me va a traer nada 
+        public async Task <IActionResult> PutCategory(int id, Category category){ // no me va a traer nada 
+
+            if(id != category.Id){
+                return BadRequest();
+            }
             _context.Entry(category).State = EntityState.Modified; // ingresa a  la categoria en la base de datos y se establece el estado a modificado
-            await _context.SaveChangesAsync();
+            
+            try{
+                await _context.SaveChangesAsync();  
+            }catch(DbUpdateConcurrencyException){
+
+                
+            }
 
             return NoContent(); // respuesta 204
         }
