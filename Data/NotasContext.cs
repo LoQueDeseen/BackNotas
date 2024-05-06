@@ -13,6 +13,7 @@ namespace BackNotas.Data
 
           public DbSet<Category> Categories {get; set;}
           public DbSet<Note> Notes {get; set;}
+          public DbSet<User> Users {get; set;}
       
     }
 
