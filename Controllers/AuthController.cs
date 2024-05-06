@@ -8,6 +8,7 @@ using BackNotas.Models;
 using BackNotas.Data;
 using System.Linq;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -27,32 +28,41 @@ public class AuthController : ControllerBase
     {
         Console.WriteLine("user" + loginRequest.UserName + " password: " + loginRequest.Password);
 
-        var user = _context.Users.FirstOrDefault(u => u.UserName == loginRequest.UserName && u.Password == loginRequest.Password);
+        var user = _context.Users.FirstOrDefault(u => u.UserName == loginRequest.UserName && u.Password == loginRequest.Password);//usuario que inició 
+       
+        if (user != null){
+
+            var IdUser= user.Id;
+        }
+        
+
+        
 
         if (user == null)
             return Unauthorized();
 
-        var token = GenerateJwtToken(user.UserName); // Generar token JWT
+        var token = GenerateJwtToken(user.UserName, user.Id); // Generar token JWT 
 
         return Ok(new { token });
     }
 
-    private string GenerateJwtToken(string username)
+    private string GenerateJwtToken(string username, int userId)
+{
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var key = Encoding.ASCII.GetBytes(_secretKey);
+    var tokenDescriptor = new SecurityTokenDescriptor
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_secretKey);
-        var tokenDescriptor = new SecurityTokenDescriptor
+        Subject = new ClaimsIdentity(new Claim[] //una reclamacion pa 
         {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Name, username)
-            }),
-            Expires = DateTime.UtcNow.AddHours(1), // Cambia el tiempo de expiración si lo necesitas
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
-    }
+            new Claim(ClaimTypes.Name, username),
+            new Claim("UserId", userId.ToString()) // id de usuario 
+        }),
+        Expires = DateTime.UtcNow.AddHours(1), 
+        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+    };
+    var token = tokenHandler.CreateToken(tokenDescriptor);
+    return tokenHandler.WriteToken(token);
+}
 
     public class LoginRequest
     {

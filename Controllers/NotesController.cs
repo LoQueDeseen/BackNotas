@@ -60,14 +60,21 @@ namespace BackNotas.Controllers
 
 
         //Editar la nota
-        [HttpPut("{Id}")]
-
-        public async Task <IActionResult> PutNote(int Id, Note note){ 
+        [HttpPut("{id}")]
+        [Route("editNote/{id}")]
+        public async Task <IActionResult> PutNote(int id, Note note){ 
+            
+            Console.WriteLine("Ha llegado esto: "+ id);
+            if(id != note.Id){
+                return BadRequest();
+            }
             _context.Entry(note).State = EntityState.Modified; // ingresa a  la categoria en la base de datos y se establece el estado a modificado
             await _context.SaveChangesAsync();
 
             return NoContent(); // respuesta 204
         }
+
+     
        
     }
 }

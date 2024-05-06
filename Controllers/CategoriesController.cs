@@ -18,6 +18,9 @@ namespace BackNotas.Controllers{
         // listar 
         [HttpGet]// traigo lista de categorías
         public async Task<ActionResult<IEnumerable<Category>>> GetUser(){ //Ienumerable trae una coleccion de categorías 
+            // var UserId =idLogueado();
+           // Console.WriteLine(UserId);
+
             return await _context.Categories.ToListAsync();// trae la lista de categorias en la base de datos 
         }
 
@@ -61,14 +64,52 @@ namespace BackNotas.Controllers{
 
         // actualizar siguendo la anterior logica
 
-        [HttpPut("{Id}")]
+        [HttpPut("{id}")]
 
-        public async Task <IActionResult> PutCategory(int Id, Category category){ // no me va a traer nada 
+        public async Task <IActionResult> PutCategory(int id, Category category){ // no me va a traer nada 
+
+            if(id != category.Id){
+                return BadRequest();
+            }
             _context.Entry(category).State = EntityState.Modified; // ingresa a  la categoria en la base de datos y se establece el estado a modificado
-            await _context.SaveChangesAsync();
+            
+            try{
+                await _context.SaveChangesAsync();  
+            }catch(DbUpdateConcurrencyException){
+
+                
+            }
 
             return NoContent(); // respuesta 204
         }
+
+    // [HttpGet("idLogueado")]
+    // public IActionResult idLogueado()
+    // {
+       
+    //     var token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        
+    //     // Decodificar 
+    //     var tokenHandler = new JwtSecurityTokenHandler(); //instancia para poder manipúlar tokends   
+    //     var key = Encoding.ASCII.GetBytes(_secretKey); // la clave es usada para firmar los tokens 
+    //     tokenHandler.ValidateToken(token, new TokenValidationParameters
+    //     {
+    //         ValidateIssuerSigningKey = true, // se debe de validadr la cklave 
+    //         IssuerSigningKey = new SymmetricSecurityKey(key), // la usa para firmar 
+    //         ValidateIssuer = false,
+    //         ValidateAudience = false,
+    //         ClockSkew = TimeSpan.Zero // no permite margen de tiempo con la hora actual
+    //     }, out SecurityToken validatedToken);
+
+    //     var jwtToken = (JwtSecurityToken)validatedToken;
+        
+
+    //     var userId = jwtToken.Claims.First(x => x.Type == "UserId").Value; //lo reclamo
+
+  
+
+    //     return Ok(userId);
+    // }
 
 
 
