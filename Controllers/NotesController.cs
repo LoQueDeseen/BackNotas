@@ -61,7 +61,7 @@ namespace BackNotas.Controllers
 
         //Editar la nota
         [HttpPut("{id}")]
-        [Route("editNote/{id}")]
+        //[Route("editNote/{id}")]
         public async Task <IActionResult> PutNote(int id, Note note){ 
             
             Console.WriteLine("Ha llegado esto: "+ id);
